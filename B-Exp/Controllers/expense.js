@@ -1,10 +1,10 @@
-const IncomeSchema = require('../Modules/income_mod')
+const ExpenseSchema = require('../Modules/expense_mod')
 
 
-exports.addIncome = async (req, res) => {
+exports.addExpense = async (req, res) => {
     const { title, amount, category, description, date} = req.body;
 
-    const income = IncomeSchema({
+    const expense = ExpenseSchema({
         title,
         amount,
         category,
@@ -26,33 +26,33 @@ exports.addIncome = async (req, res) => {
                             message: "The amount must be a number"
                         })
         }
-        await income.save()
+        await expense.save()
         res.status(200).json({message: "Success"})
     } 
     catch (error) {
-        res.status(500).json({message: "Error saving income"})
+        res.status(500).json({message: "Error saving expense"})
     }
 
-    console.log(income);
+    console.log(expense);
 }
 
 
-exports.getIncomes = async (req, res) => {
+exports.getExpenses = async (req, res) => {
     try {
-            const incomes = await IncomeSchema.find().sort({createdAt: -1})
-            res.status(200).json(incomes)
+            const expenses = await ExpenseSchema.find().sort({createdAt: -1})
+            res.status(200).json(expenses)
         } catch (error) {
-            res.status(500).json({message: "Error getting incomes"})
+            res.status(500).json({message: "Error getting expenses"})
         }
 }
 
-exports.deleteIncome = async (req, res) => {
+exports.deleteExpense = async (req, res) => {
     const {id} = req.params;
-    IncomeSchema.findByIdAndDelete(id)
-    .then((income) => {
+    ExpenseSchema.findByIdAndDelete(id)
+    .then((expense) => {
         res.status(200).json({message: "Success"})
     })
     .catch ((error) => {
-        res.status(500).json({message: "Error deleting income"})
+        res.status(500).json({message: "Error deleting expense"})
     })
 }
